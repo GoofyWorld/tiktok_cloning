@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentication/onboarding/interests_screen.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 
 class LoginFormScreen extends StatefulWidget {
@@ -19,7 +20,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        print(formData.values);
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const InterestsScreen()));
       }
     }
   }
