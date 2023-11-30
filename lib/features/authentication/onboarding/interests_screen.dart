@@ -165,25 +165,3 @@ class _InterestsScreenState extends State<InterestsScreen> {
     );
   }
 }
-
-
-
-
-
-
-// Container(
-//             padding: const EdgeInsets.symmetric(
-//               vertical: Sizes.size11,
-//             ),
-//             decoration: BoxDecoration(
-//               color: Theme.of(context).primaryColor,
-//             ),
-//             child: const Text(
-//               textAlign: TextAlign.center,
-//               'Next',
-//               style: TextStyle(
-//                 color: Colors.white,
-//                 fontSize: Sizes.size20,
-//               ),
-//             ),
-//           ),
