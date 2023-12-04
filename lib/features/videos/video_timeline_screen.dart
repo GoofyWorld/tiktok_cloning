@@ -11,17 +11,10 @@ class VideoTimelineScreen extends StatefulWidget {
 class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   final PageController _pageController = PageController();
 
-  final Duration _scrollDuration = const Duration(milliseconds: 150);
+  final Duration _scrollDuration = const Duration(milliseconds: 200);
   final Curve _scrollCurve = Curves.linear;
 
   int _itemCount = 4;
-
-  List<Color> colors = [
-    Colors.blue,
-    Colors.red,
-    Colors.yellow,
-    const Color.fromRGBO(0, 150, 136, 1),
-  ];
 
   void _onPageChanged(int page) {
     _pageController.animateToPage(
@@ -31,21 +24,21 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
     );
     if (page == _itemCount - 1) {
       _itemCount = _itemCount + 4;
-      colors.addAll(
-        [
-          Colors.blue,
-          Colors.red,
-          Colors.yellow,
-          const Color.fromRGBO(0, 150, 136, 1),
-        ],
-      );
       setState(() {});
     }
-    print(page);
   }
 
   void _onVideoFinished() {
-    _pageController.nextPage(duration: _scrollDuration, curve: _scrollCurve);
+    _pageController.nextPage(
+      duration: _scrollDuration,
+      curve: _scrollCurve,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,7 +48,8 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChanged,
       itemCount: _itemCount,
-      itemBuilder: (context, index) => const VideoPost(),
+      itemBuilder: (context, index) =>
+          VideoPost(onVideoFinished: _onVideoFinished, index: index),
     );
   }
 }
