@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -25,6 +27,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  bool _isSeemore = false;
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -39,6 +42,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
@@ -56,9 +60,6 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
-    _animationController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -81,9 +82,14 @@ class _VideoPostState extends State<VideoPost>
       _videoPlayerController.play();
       _animationController.forward();
     }
-
     setState(() {
       _isPaused = !_isPaused;
+    });
+  }
+
+  void _onSeemoreTap() {
+    setState(() {
+      _isSeemore = !_isSeemore;
     });
   }
 
@@ -98,7 +104,7 @@ class _VideoPostState extends State<VideoPost>
             child: _videoPlayerController.value.isInitialized
                 ? VideoPlayer(_videoPlayerController)
                 : Container(
-                    color: Colors.teal,
+                    color: Colors.black,
                   ),
           ),
           Positioned.fill(
@@ -109,19 +115,101 @@ class _VideoPostState extends State<VideoPost>
           Positioned.fill(
             child: IgnorePointer(
               child: Center(
-                child: Transform.scale(
-                  scale: _animationController.value,
-                  child: AnimatedOpacity(
-                    duration: _animationDuration,
-                    opacity: _isPaused ? 1 : 0,
-                    child: const FaIcon(
-                      FontAwesomeIcons.play,
-                      color: Colors.white,
-                      size: Sizes.size52,
-                    ),
-                  ),
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      child: AnimatedOpacity(
+                        duration: _animationDuration,
+                        opacity: _isPaused ? 1 : 0,
+                        child: const FaIcon(
+                          FontAwesomeIcons.play,
+                          color: Colors.white,
+                          size: Sizes.size52,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@goofy",
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                GestureDetector(
+                  onTap: _onSeemoreTap,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 210,
+                        child: Text(
+                          overflow: _isSeemore
+                              ? TextOverflow.visible
+                              : TextOverflow.ellipsis,
+                          "When we try to control cat!! below is overflowed.",
+                          style: const TextStyle(
+                            fontSize: Sizes.size16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        _isSeemore ? "" : "See more",
+                        style: const TextStyle(
+                          fontSize: Sizes.size16,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 30,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      "https://avatars.githubusercontent.com/u/123724249?s=96&v=4"),
+                  child: Text("구피"),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
             ),
           ),
         ],

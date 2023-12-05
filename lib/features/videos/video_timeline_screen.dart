@@ -29,10 +29,11 @@ class _VideoTimelineScreenState extends State<VideoTimelineScreen> {
   }
 
   void _onVideoFinished() {
-    _pageController.nextPage(
+    return;
+    /*   _pageController.nextPage(
       duration: _scrollDuration,
       curve: _scrollCurve,
-    );
+    );  요즘은 넘어가기 안 하고 반복 재생해서 제거!   */
   }
 
   @override
