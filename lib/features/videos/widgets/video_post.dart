@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -28,6 +29,7 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isSeemore = false;
+  final String _text = "When we try to control cat!! below is overflowed.";
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
@@ -69,7 +71,9 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
@@ -91,6 +95,18 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       _isSeemore = !_isSeemore;
     });
+  }
+
+  void _onCommentsTap(BuildContext context) async {
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause();
+    }
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VideoComments(),
+    );
+    _onTogglePause();
   }
 
   @override
@@ -141,15 +157,6 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "@goofy",
-                  style: TextStyle(
-                    fontSize: Sizes.size20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Gaps.v10,
                 GestureDetector(
                   onTap: _onSeemoreTap,
                   child: Row(
@@ -158,13 +165,13 @@ class _VideoPostState extends State<VideoPost>
                       SizedBox(
                         width: 210,
                         child: Text(
-                          overflow: _isSeemore
-                              ? TextOverflow.visible
-                              : TextOverflow.ellipsis,
-                          "When we try to control cat!! below is overflowed.",
-                          style: const TextStyle(
+                          _text,
+                          style: TextStyle(
                             fontSize: Sizes.size16,
                             color: Colors.white,
+                            overflow: _isSeemore
+                                ? TextOverflow.visible
+                                : TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -174,19 +181,19 @@ class _VideoPostState extends State<VideoPost>
                           fontSize: Sizes.size16,
                           color: Colors.white,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 30,
             right: 10,
             child: Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,
@@ -195,17 +202,20 @@ class _VideoPostState extends State<VideoPost>
                   child: Text("구피"),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.solidHeart,
                   text: "2.9M",
                 ),
                 Gaps.v24,
-                VideoButton(
-                  icon: FontAwesomeIcons.solidComment,
-                  text: "33K",
+                GestureDetector(
+                  onTap: () => _onCommentsTap(context),
+                  child: const VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: "33K",
+                  ),
                 ),
                 Gaps.v24,
-                VideoButton(
+                const VideoButton(
                   icon: FontAwesomeIcons.share,
                   text: "Share",
                 ),
