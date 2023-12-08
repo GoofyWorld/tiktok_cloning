@@ -4,8 +4,8 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
-import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoPost extends StatefulWidget {
   final Function onVideoFinished;
@@ -22,9 +22,6 @@ class VideoPost extends StatefulWidget {
 
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
-  final VideoPlayerController _videoPlayerController =
-      VideoPlayerController.asset("assets/videos/video1.mp4");
-
   late final AnimationController _animationController;
 
   bool _isPaused = false;
@@ -32,6 +29,9 @@ class _VideoPostState extends State<VideoPost>
   final String _text = "When we try to control cat!! below is overflowed.";
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  final VideoPlayerController _videoPlayerController =
+      VideoPlayerController.asset("assets/videos/video1.mp4");
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -76,6 +76,10 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
+    }
   }
 
   void _onTogglePause() {
@@ -103,6 +107,7 @@ class _VideoPostState extends State<VideoPost>
     }
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // 이 설정을 해줘야 bottom sheet의 사이즈를 변경할 수 있음
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );
