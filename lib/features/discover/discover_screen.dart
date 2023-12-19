@@ -58,6 +58,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
   void _onTapbarTapped(int num) {
     FocusScope.of(context).unfocus();
+    setState(() {
+      _tabController.index = num;
+    });
   }
 
   @override
@@ -129,6 +132,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
             GridView.builder(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -6,6 +7,7 @@ import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:video_player/video_player.dart';
+import 'package:volume_controller/volume_controller.dart';
 
 class VideoPost extends StatefulWidget {
   final Function onVideoFinished;
@@ -26,6 +28,10 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isSeemore = false;
+  bool _isMuted = kIsWeb ? true : false;
+
+  double _systemVolume = 0;
+
   final String _text = "When we try to control cat!! below is overflowed.";
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
@@ -45,6 +51,9 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+    }
     _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
@@ -113,6 +122,22 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
+  }
+
+  void _setVideoPlayerVolume() async {
+    _systemVolume = await VolumeController().getVolume();
+    _videoPlayerController.setVolume(_systemVolume);
+  }
+
+  void _onMuteTap() {
+    setState(() {
+      if (!_isMuted) {
+        _videoPlayerController.setVolume(0);
+      } else {
+        _setVideoPlayerVolume();
+      }
+      _isMuted = !_isMuted;
+    });
   }
 
   @override
@@ -199,6 +224,19 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: _onMuteTap,
+                  child: _isMuted
+                      ? const FaIcon(
+                          FontAwesomeIcons.volumeXmark,
+                          color: Colors.black54,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.volumeHigh,
+                          color: Colors.black54,
+                        ),
+                ),
+                Gaps.v24,
                 const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
