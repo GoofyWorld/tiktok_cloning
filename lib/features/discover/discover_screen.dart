@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -65,6 +66,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -72,41 +74,46 @@ class _DiscoverScreenState extends State<DiscoverScreen>
         appBar: AppBar(
           elevation: 1,
           centerTitle: true,
-          title: TextField(
-            controller: _textEditingController,
-            onChanged: _onTextChanged,
-            cursorColor: Theme.of(context).primaryColor,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey.shade300,
-              focusColor: Colors.grey.shade300,
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(Sizes.size12),
-              ),
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(
-                  top: Sizes.size12,
-                  left: Sizes.size14,
+          title: Container(
+            constraints: const BoxConstraints(
+              maxWidth: Breakpoints.sm,
+            ),
+            child: TextField(
+              controller: _textEditingController,
+              onChanged: _onTextChanged,
+              cursorColor: Theme.of(context).primaryColor,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey.shade300,
+                focusColor: Colors.grey.shade300,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(Sizes.size12),
                 ),
-                child: FaIcon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  color: Colors.black,
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.only(
+                    top: Sizes.size7,
+                    left: Sizes.size11,
+                  ),
+                  child: FaIcon(
+                    FontAwesomeIcons.magnifyingGlass,
+                    color: Colors.black,
+                  ),
                 ),
+                suffixIcon: _isWriting
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          top: Sizes.size7,
+                          right: Sizes.size14,
+                        ),
+                        child: GestureDetector(
+                          onTap: _onClearTapped,
+                          child: const FaIcon(FontAwesomeIcons.solidCircleXmark,
+                              color: Colors.black45),
+                        ),
+                      )
+                    : null,
               ),
-              suffixIcon: _isWriting
-                  ? Padding(
-                      padding: const EdgeInsets.only(
-                        top: Sizes.size12,
-                        left: Sizes.size14,
-                      ),
-                      child: GestureDetector(
-                        onTap: _onClearTapped,
-                        child: const FaIcon(FontAwesomeIcons.solidCircleXmark,
-                            color: Colors.black45),
-                      ),
-                    )
-                  : null,
             ),
           ),
           // CupertinoSearchTextField(
@@ -139,73 +146,77 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               itemCount: 20,
               padding: const EdgeInsets.symmetric(
                   horizontal: Sizes.size6, vertical: Sizes.size6),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: width > Breakpoints.md ? 5 : 2,
                 crossAxisSpacing: Sizes.size10,
                 mainAxisSpacing: Sizes.size10,
                 childAspectRatio: 9 / 21,
               ),
-              itemBuilder: (context, index) => Column(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Sizes.size4),
+              itemBuilder: (context, index) => LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Sizes.size4),
+                      ),
+                      child: AspectRatio(
+                        aspectRatio: 9 / 16,
+                        child: FadeInImage.assetNetwork(
+                            fit: BoxFit.cover,
+                            placeholder: "assets/images/image1.jpg",
+                            image:
+                                "https://cdn.pixabay.com/photo/2023/06/01/05/59/oranges-8032713_1280.jpg"),
+                      ),
                     ),
-                    child: AspectRatio(
-                      aspectRatio: 9 / 16,
-                      child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          placeholder: "assets/images/image1.jpg",
-                          image:
-                              "https://cdn.pixabay.com/photo/2023/06/01/05/59/oranges-8032713_1280.jpg"),
+                    Gaps.v10,
+                    Text(
+                      "${constraints.maxWidth} This is a very long caption for my tiktok that I am uploading just now currently.",
+                      style: const TextStyle(
+                        fontSize: Sizes.size16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Gaps.v10,
-                  const Text(
-                    "This is a very long caption for my tiktok that I am uploading just now currently.",
-                    style: TextStyle(
-                      fontSize: Sizes.size16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Gaps.v8,
-                  DefaultTextStyle(
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 15,
-                          backgroundImage: NetworkImage(
-                              "https://avatars.githubusercontent.com/u/123724249?s=96&v=4"),
-                        ),
-                        Gaps.h4,
-                        const Expanded(
-                          child: Text(
-                            "Goofy_Seong_Avatar_BlahBlah_OkOK",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Gaps.h4,
-                        FaIcon(
-                          FontAwesomeIcons.heart,
-                          size: Sizes.size16,
+                    Gaps.v8,
+                    if (constraints.maxWidth < 200 ||
+                        constraints.maxWidth > 250)
+                      DefaultTextStyle(
+                        style: TextStyle(
                           color: Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Gaps.h2,
-                        const Text(
-                          "2.5M",
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 15,
+                              backgroundImage: NetworkImage(
+                                  "https://avatars.githubusercontent.com/u/123724249?s=96&v=4"),
+                            ),
+                            Gaps.h4,
+                            const Expanded(
+                              child: Text(
+                                "Goofy_Seong_Avatar_BlahBlah_OkOK",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Gaps.h4,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size16,
+                              color: Colors.grey.shade600,
+                            ),
+                            Gaps.h2,
+                            const Text(
+                              "2.5M",
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                  ],
+                ),
               ),
               // Image.asset("assets/images/image1.jpg"), // 넷 상 이미지를 불러올꺼면 Image.network() 이용
             ),
