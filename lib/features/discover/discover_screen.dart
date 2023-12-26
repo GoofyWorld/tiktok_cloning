@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 final tabs = ["Top", "Users", "Videos", "Sounds", "LIVE", "Shopping", "Brands"];
 
@@ -82,29 +83,36 @@ class _DiscoverScreenState extends State<DiscoverScreen>
               controller: _textEditingController,
               onChanged: _onTextChanged,
               cursorColor: Theme.of(context).primaryColor,
+              style: TextStyle(
+                color: isDarkMode(context) ? Colors.white : Colors.black,
+              ),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey.shade300,
+                fillColor: isDarkMode(context)
+                    ? Colors.grey.shade600
+                    : Colors.grey.shade300,
                 focusColor: Colors.grey.shade300,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(Sizes.size12),
                 ),
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.only(
-                    top: Sizes.size7,
-                    left: Sizes.size11,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(
+                    top: Sizes.size11,
+                    left: Sizes.size16,
                   ),
                   child: FaIcon(
                     FontAwesomeIcons.magnifyingGlass,
-                    color: Colors.black,
+                    color: isDarkMode(context)
+                        ? Colors.grey.shade300
+                        : Colors.black,
                   ),
                 ),
                 suffixIcon: _isWriting
                     ? Padding(
                         padding: const EdgeInsets.only(
-                          top: Sizes.size7,
-                          right: Sizes.size14,
+                          top: Sizes.size12,
+                          right: Sizes.size6,
                         ),
                         child: GestureDetector(
                           onTap: _onClearTapped,
@@ -127,10 +135,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(horizontal: Sizes.size16),
             isScrollable: true,
-            unselectedLabelColor: Colors.grey.shade500,
-            labelColor: Colors.black,
             indicatorSize: TabBarIndicatorSize.tab,
-            indicatorColor: Colors.black,
             labelStyle: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: Sizes.size16,
@@ -170,11 +175,12 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                       ),
                     ),
                     Gaps.v10,
-                    Text(
-                      "${constraints.maxWidth} This is a very long caption for my tiktok that I am uploading just now currently.",
-                      style: const TextStyle(
+                    const Text(
+                      "This is a very long caption for my tiktok that I am uploading just now currently.",
+                      style: TextStyle(
                         fontSize: Sizes.size16,
                         fontWeight: FontWeight.w500,
+                        height: 1.2,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -184,7 +190,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                         constraints.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: Colors.grey.shade600,
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade600,
                           fontWeight: FontWeight.bold,
                         ),
                         child: Row(

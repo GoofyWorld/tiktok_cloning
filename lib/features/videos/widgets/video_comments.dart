@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class VideoComments extends StatefulWidget {
   const VideoComments({super.key});
@@ -42,9 +43,9 @@ class _VideoCommentsState extends State<VideoComments> {
         borderRadius: BorderRadius.circular(Sizes.size16),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDarkMode(context) ? null : Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: isDarkMode(context) ? null : Colors.grey.shade50,
           centerTitle: true,
           title: const Text("22796 comments"),
           automaticallyImplyLeading: false, // back button 없애기
@@ -72,9 +73,11 @@ class _VideoCommentsState extends State<VideoComments> {
                   itemCount: 10,
                   itemBuilder: (context, index) => Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 18,
-                        child: Text("구피"),
+                        backgroundColor:
+                            isDarkMode(context) ? Colors.grey.shade500 : null,
+                        child: const Text("구피"),
                       ),
                       Gaps.h10,
                       Expanded(
@@ -119,14 +122,14 @@ class _VideoCommentsState extends State<VideoComments> {
               Positioned(
                 bottom: 0,
                 width: size.width,
-                child: BottomAppBar(
-                  color: Colors.white,
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: Sizes.size1,
-                        right: Sizes.size1,
-                        bottom: Sizes.size2,
-                        top: Sizes.size2),
+                        left: Sizes.size16,
+                        right: Sizes.size16,
+                        top: Sizes.size16,
+                        bottom: Sizes.size24),
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -154,7 +157,9 @@ class _VideoCommentsState extends State<VideoComments> {
                                       BorderRadius.circular(Sizes.size12),
                                 ),
                                 filled: true,
-                                fillColor: Colors.grey.shade200,
+                                fillColor: isDarkMode(context)
+                                    ? Colors.grey.shade800
+                                    : Colors.grey.shade200,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: Sizes.size12,
                                   vertical: Sizes.size10,
@@ -169,17 +174,23 @@ class _VideoCommentsState extends State<VideoComments> {
                                     children: [
                                       FaIcon(
                                         FontAwesomeIcons.at,
-                                        color: Colors.grey.shade900,
+                                        color: isDarkMode(context)
+                                            ? Colors.grey.shade500
+                                            : Colors.grey.shade900,
                                       ),
                                       Gaps.h10,
                                       FaIcon(
                                         FontAwesomeIcons.gift,
-                                        color: Colors.grey.shade900,
+                                        color: isDarkMode(context)
+                                            ? Colors.grey.shade500
+                                            : Colors.grey.shade900,
                                       ),
                                       Gaps.h10,
                                       FaIcon(
                                         FontAwesomeIcons.faceSmile,
-                                        color: Colors.grey.shade900,
+                                        color: isDarkMode(context)
+                                            ? Colors.grey.shade500
+                                            : Colors.grey.shade900,
                                       ),
                                       Gaps.h10,
                                       if (_isWriting)

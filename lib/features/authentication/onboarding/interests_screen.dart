@@ -123,11 +123,13 @@ class _InterestsScreenState extends State<InterestsScreen> {
                   ),
                 ),
                 Gaps.v20,
-                const Text(
-                  "Get better video recommendations",
-                  style: TextStyle(
-                    fontSize: Sizes.size20,
-                    color: Color.fromARGB(255, 87, 86, 86),
+                const Opacity(
+                  opacity: 0.7,
+                  child: Text(
+                    "Get better video recommendations",
+                    style: TextStyle(
+                      fontSize: Sizes.size20,
+                    ),
                   ),
                 ),
                 Gaps.v56,
@@ -145,13 +147,12 @@ class _InterestsScreenState extends State<InterestsScreen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
         elevation: 1,
         height: Sizes.size96 + Sizes.size72,
         child: Padding(
           padding: const EdgeInsets.only(
-            bottom: Sizes.size80,
-            top: Sizes.size10,
+            bottom: Sizes.size60,
+            top: Sizes.size40,
             left: Sizes.size24,
             right: Sizes.size24,
           ),

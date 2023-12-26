@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class UserInfoWidget extends StatelessWidget {
   const UserInfoWidget({
@@ -16,10 +17,10 @@ class UserInfoWidget extends StatelessWidget {
       children: [
         Text(
           num,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: Sizes.size20,
-            color: Colors.black,
+            color: isDarkMode(context) ? Colors.white : Colors.black,
           ),
         ),
         Text(
