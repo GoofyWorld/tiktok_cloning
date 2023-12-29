@@ -1,0 +1,12 @@
+{
+  "signUpTitle": "{nameOfTheApp} 회원가입",
+  "LoginTitle": "{nameOfTheApp} 로그인",
+  "signUpSubtitle": "프로필을 생성하고, 다른 계정을 팔로우하고, 자신만의 영상도 만들어보세요",
+  "emailPasswordButton": "이메일/패스워드로 회원가입",
+  "appleButton": "애플 계정으로 회원가입",
+  "alreadyHaveAnAccount": "이미 계정이 있으신가요?",
+  "logIn": "로그인",
+  "likeCount": "{value}",
+  "commentCount": "{value}",
+  "commentTitle": "{value} {value2, plural, =1{comment} other{comments}}"
+}

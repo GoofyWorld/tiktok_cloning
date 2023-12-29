@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
+import 'package:tiktok_clone/router.dart';
 import 'package:tiktok_clone/utils.dart';
+import 'package:flutter_gen/gen_l10n/intl_generated.dart';
 // import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 // import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 
@@ -30,15 +30,23 @@ class TikTokApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    S.load(const Locale("en"));
+    return MaterialApp.router(
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
-      localizationsDelegates: const [
+      localizationsDelegates:
+          // AppLocalizations.localizationsDelegates,
+          const [
+        S.delegate,
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [
+      supportedLocales:
+          // AppLocalizations.supportedLocales,
+          const [
         Locale("en"),
         Locale("ko"),
       ],
@@ -115,34 +123,33 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const SignUpScreen(),
     );
   }
 }
 
-class LayoutBuilderCodeLab extends StatelessWidget {
-  const LayoutBuilderCodeLab({super.key});
+// class LayoutBuilderCodeLab extends StatelessWidget {
+//   const LayoutBuilderCodeLab({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) => Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          color: Colors.teal,
-          child: Center(
-            child: Text(
-              "${size.width} / ${constraints.maxWidth}",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 98,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final size = MediaQuery.of(context).size;
+//     return Scaffold(
+//       body: LayoutBuilder(
+//         builder: (context, constraints) => Container(
+//           width: constraints.maxWidth,
+//           height: constraints.maxHeight,
+//           color: Colors.teal,
+//           child: Center(
+//             child: Text(
+//               "${size.width} / ${constraints.maxWidth}",
+//               style: const TextStyle(
+//                 color: Colors.white,
+//                 fontSize: 98,
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
