@@ -7,10 +7,15 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 import 'package:tiktok_clone/features/users/widgets/user_info_widget.dart';
 import 'package:tiktok_clone/features/users/widgets/user_info_widget2.dart';
-import 'package:tiktok_clone/utils.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String username;
+  final String tab;
+  const UserProfileScreen({
+    super.key,
+    required this.username,
+    required this.tab,
+  });
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -31,6 +36,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: SafeArea(
         child: DefaultTabController(
+          initialIndex: widget.tab == "likes" ? 1 : 0,
           length: 2,
           child: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -39,7 +45,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   backgroundColor:
                       Theme.of(context).appBarTheme.backgroundColor,
                   centerTitle: true,
-                  title: const Text('Siru'),
+                  title: Text(widget.username),
                   actions: [
                     IconButton(
                       onPressed: _onGearPressed,
@@ -67,9 +73,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
-                                    "@siru",
-                                    style: TextStyle(
+                                  Text(
+                                    "@${widget.username}",
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: Sizes.size20,
                                     ),
