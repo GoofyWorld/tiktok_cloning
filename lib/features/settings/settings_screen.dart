@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,6 +54,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: ListView(
             children: [
+              AnimatedBuilder(
+                animation: darkmodeConfig,
+                builder: (context, child) => SwitchListTile(
+                  value: darkmodeConfig.value,
+                  onChanged: (value) {
+                    setState(() {
+                      darkmodeConfig.value = !darkmodeConfig.value;
+                    });
+                  },
+                  title: const Text("Dark Mode On/Off"),
+                  subtitle: const Text("Tap for brightness change"),
+                ),
+              ),
+              AnimatedBuilder(
+                animation: videoConfig,
+                builder: (context, child) => SwitchListTile(
+                  value: videoConfig.value,
+                  onChanged: (value) {
+                    videoConfig.value = !videoConfig.value;
+                  },
+                  title: const Text("Mute Video "),
+                  subtitle: const Text("Videos will be muted by"),
+                ),
+              ),
               SwitchListTile(
                 value: _notifications,
                 onChanged: _onNotificationsChanged,
