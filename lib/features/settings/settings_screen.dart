@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
-import 'package:tiktok_clone/main.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -54,6 +54,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: ListView(
             children: [
+              /*
+              SwitchListTile.adaptive(
+                value: context.watch<VideoConfig>().isMuted,
+                onChanged: (value) =>
+                    context.read<VideoConfig>().toggleIsMuted(),
+                title: const Text("Auto Mute"),
+                subtitle: const Text("Videos muted by default"),
+              ),
+
+                SwitchListTile(
+                value: _notifications,
+                onChanged: _onNotificationsChanged,
+                title: Text(
+                    "Enable Notification ${MediaQuery.of(context).size.width}"),
+                subtitle: const Text("detailed information"),
+              ),
+              SwitchListTile(
+                value: _notifications,
+                onChanged: _onNotificationsChanged,
+                title: Text(
+                    "Enable Notification ${MediaQuery.of(context).size.width}"),
+                subtitle: const Text("detailed information"),
+              ),
+              
               AnimatedBuilder(
                 animation: darkmodeConfig,
                 builder: (context, child) => SwitchListTile(
@@ -77,13 +101,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text("Mute Video "),
                   subtitle: const Text("Videos will be muted by"),
                 ),
+              ), */
+              SwitchListTile(
+                value: context.watch<PlaybackConfigViewModel>().muted,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                title: const Text("Mute Video"),
+                subtitle: const Text("Videos will be muted by default."),
               ),
               SwitchListTile(
-                value: _notifications,
-                onChanged: _onNotificationsChanged,
-                title: Text(
-                    "Enable Notification ${MediaQuery.of(context).size.width}"),
-                subtitle: const Text("detailed information"),
+                value: context.watch<PlaybackConfigViewModel>().autoplay,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setAutoplay(value),
+                title: const Text("Autoplay"),
+                subtitle:
+                    const Text("Videos will start playing automatically."),
               ),
               CheckboxListTile(
                 activeColor: Colors.black,
