@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "876707441424",
+    "project_id": "tiktok-mygoofy",
+    "storage_bucket": "tiktok-mygoofy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876707441424:android:fb4c86e730cf7221ca9395",
+        "android_client_info": {
+          "package_name": "com.example.tiktok_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjP-MFia9IKrVVJx78ERmIttHHMtFI2MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

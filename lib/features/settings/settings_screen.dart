@@ -1,32 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
+  // bool _notifications = false;
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = false;
-
-  void _onNotificationsChanged(bool? newValue) {
-    if (newValue == null) return;
-    setState(
-      () {
-        _notifications = newValue;
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -103,16 +90,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ), */
               SwitchListTile(
-                value: context.watch<PlaybackConfigViewModel>().muted,
+                // value: context.watch<PlaybackConfigViewModel>().muted,
+                value: ref.watch(playbackConfigProvider).muted,
                 onChanged: (value) =>
-                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                    {ref.read(playbackConfigProvider.notifier).setMuted(value)},
+                //     context.read<PlaybackConfigViewModel>().setMuted(value),
+
                 title: const Text("Mute Video"),
                 subtitle: const Text("Videos will be muted by default."),
               ),
               SwitchListTile(
-                value: context.watch<PlaybackConfigViewModel>().autoplay,
-                onChanged: (value) =>
-                    context.read<PlaybackConfigViewModel>().setAutoplay(value),
+                // value: context.watch<PlaybackConfigViewModel>().autoplay,
+                value: ref.watch(playbackConfigProvider).autoplay,
+                onChanged: (value) => {
+                  ref.read(playbackConfigProvider.notifier).setAutoplay(value)
+                },
+                // context.read<PlaybackConfigViewModel>().setAutoplay(value),
                 title: const Text("Autoplay"),
                 subtitle:
                     const Text("Videos will start playing automatically."),
@@ -120,8 +113,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               CheckboxListTile(
                 activeColor: Colors.black,
                 checkColor: Colors.white,
-                value: _notifications,
-                onChanged: _onNotificationsChanged,
+                // value: _notifications,
+                value: false,
+                // onChanged: _onNotificationsChanged,
+                onChanged: (value) {},
                 title: const Text(
                   "Enable notifications",
                 ),
@@ -138,7 +133,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     print(date);
                   }
 
-                  if (!mounted) return;
                   final time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
@@ -147,7 +141,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     print(time);
                   }
 
-                  if (!mounted) return;
                   final booking = await showDateRangePicker(
                     context: context,
                     firstDate: DateTime(1992),
@@ -185,7 +178,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: const Text("No"),
                         ),
                         CupertinoDialogAction(
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () {
+                            ref.read(authRepo).signOut();
+                            context.go("/");
+                          },
                           isDestructiveAction: true,
                           child: const Text("Yes"),
                         ),
