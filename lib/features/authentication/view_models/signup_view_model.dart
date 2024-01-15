@@ -36,7 +36,8 @@ class SignUpViewModel extends AsyncNotifier<void> {
           email: userCredential.user!.email ?? "anon@anon.com",
           uid: userCredential.user!.uid,
           name: form["name"] ?? "Anon",
-          birthday: form["birthday"] ?? "");
+          birthday: form["birthday"] ?? "",
+          hasAvatar: false);
 
       await users.createProfile(profile);
     });

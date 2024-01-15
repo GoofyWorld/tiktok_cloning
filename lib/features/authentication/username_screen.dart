@@ -5,8 +5,6 @@ import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/email_screen.dart';
 import 'package:tiktok_clone/features/authentication/view_models/signup_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/features/users/models/user_profile_model.dart';
-import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
 
 class UsernameScreen extends ConsumerStatefulWidget {
   const UsernameScreen({super.key});
